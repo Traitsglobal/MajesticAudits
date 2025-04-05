@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { Phone, Mail, MapPin } from "lucide-react"
 
 export default function Footer() {
@@ -14,31 +13,31 @@ export default function Footer() {
                             © {new Date().getFullYear()} Majestic.
                         </div>
                         <div className="flex items-center gap-4">
-                            <Link href="/privacy-policy" className="hover:text-white transition-colors text-xs">
+                            <div className="hover:text-white transition-colors text-xs">
                                 Privacy Policy
-                            </Link>
+                            </div>
                             <span>•</span>
-                            <Link href="/terms-of-service" className="hover:text-white transition-colors text-xs">
+                            <div className="hover:text-white transition-colors text-xs">
                                 Terms
-                            </Link>
+                            </div>
                         </div>
                     </div>
 
                     {/* Middle Section: Contact Info */}
                     <div className="flex flex-col space-y-3 text-blue-200">
                         <a 
-                            href="tel:+97141234567" 
+                            href="tel:+971526069700" 
                             className="flex items-center hover:text-white transition-colors group"
                         >
                             <Phone size={16} className="mr-2 text-[#FF6B35] group-hover:text-white transition-colors" />
-                            +971 4 123 4567
+                            (+971)526069700
                         </a>
                         <a 
-                            href="mailto:info@majestic.com" 
+                            href="mailto:letstalk@majestic.com" 
                             className="flex items-center hover:text-white transition-colors group"
                         >
                             <Mail size={16} className="mr-2 text-[#FF6B35] group-hover:text-white transition-colors" />
-                            info@majestic.com
+                            letstalk@majestic.com
                         </a>
                     </div>
 

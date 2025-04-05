@@ -36,10 +36,35 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutPage() {
     try {
         const response = await getAboutPageData();
+        
+        // Validate that we have the required data
+        if (!response?.data?.blocks) {
+            console.error('Blocks data not found in the response');
+            return (
+                <main className="bg-white">
+                    <div className="container mx-auto px-4 py-12 max-w-6xl">
+                        <div className="text-center">
+                            <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading About Page</h1>
+                            <p className="text-gray-600">We&apos;re sorry, but we couldn&apos;t load the about page content. Please try again later.</p>
+                        </div>
+                    </div>
+                </main>
+            );
+        }
+
         return <AboutPageClient data={response.data} />
     } catch (error) {
         console.error('Error fetching about page:', error)
-        return <div>Something went wrong loading the about page. Please try again later.</div>
+        return (
+            <main className="bg-white">
+                <div className="container mx-auto px-4 py-12 max-w-6xl">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading About Page</h1>
+                        <p className="text-gray-600">We&apos;re sorry, but we couldn&apos;t load the about page content. Please try again later.</p>
+                    </div>
+                </div>
+            </main>
+        );
     }
 }
 

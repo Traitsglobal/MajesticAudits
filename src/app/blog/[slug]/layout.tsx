@@ -2,11 +2,16 @@ import { generatePageMetadata } from "@/lib/metadata"
 import { Metadata } from "next"
 import ApiService from "@/services/api.services"
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+type Props = {
+    params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     try {
-        const response = await ApiService.fetchBlogPost(params.slug);
+        const resolvedParams = await params;
+        const response = await ApiService.fetchBlogPost(resolvedParams.slug);
         const post = response.data;
-        
+
         return generatePageMetadata('blog', {
             title: `${post.title} | Majestic Audits`,
             description: post.content?.[0]?.children?.[0]?.text || '',
@@ -22,7 +27,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default function Layout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
     return children
 } 

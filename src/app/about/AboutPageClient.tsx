@@ -8,6 +8,11 @@ import { AboutPageClientProps, OurStoryBlock, VisionMissionBlock, CoreValuesBloc
 import { getStrapiMedia } from "@/lib/utils"
 
 export default function AboutPageClient({ data }: AboutPageClientProps) {
+    // Validate that we have blocks data
+    if (!data?.blocks) {
+        return null;
+    }
+
     const ourStory = data.blocks.find((block): block is OurStoryBlock =>
         block.__component === "layout.ourstory"
     );

@@ -272,7 +272,10 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                                             <span>{formatDate(post.date)}</span>
                                             <span className="mx-2">|</span>
                                             <Link
-                                                href={`/blog/category/${encodeURIComponent(post.categories)}`}
+                                                href={{
+                                                    pathname: '/blog/category/[category]',
+                                                    query: { category: post.categories }
+                                                }}
                                                 className="text-[#003366] hover:underline"
                                                 scroll={false}
                                             >
@@ -377,7 +380,10 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                                                         {post.tags.split(',').map((tag) => (
                                                             <Link
                                                                 key={tag}
-                                                                href={`/blog/tag/${encodeURIComponent(tag.trim())}`}
+                                                                href={{
+                                                                    pathname: '/blog/tag/[tag]',
+                                                                    query: { tag: tag.trim() }
+                                                                }}
                                                                 className="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-[#003366] hover:text-white transition-colors"
                                                                 scroll={false}
                                                             >
@@ -547,7 +553,10 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                             {post.tags.split(',').map((tag) => (
                                 <Link
                                     key={tag}
-                                    href={`/blog/tag/${encodeURIComponent(tag.trim())}`}
+                                    href={{
+                                        pathname: '/blog/tag/[tag]',
+                                        query: { tag: tag.trim() }
+                                    }}
                                     className="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-[#003366] hover:text-white transition-colors"
                                     scroll={false}
                                 >
