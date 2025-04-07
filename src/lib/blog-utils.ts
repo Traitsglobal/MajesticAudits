@@ -6,8 +6,7 @@ export async function getBlogPosts(limit?: number): Promise<BlogPost[]> {
         const response: BlogResponse = await ApiService.fetchBlogData()
         const allPosts = response.data || []
         return limit ? allPosts.slice(0, limit) : allPosts
-    } catch (error) {
-        console.error('Error fetching blog posts:', error)
+    } catch {
         return []
     }
 } 

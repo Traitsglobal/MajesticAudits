@@ -38,7 +38,7 @@ export default function WhatsAppButton() {
 
                     {/* WhatsApp Button */}
                     <motion.a
-                        href="https://wa.me/971412345678"
+                        href="https://api.whatsapp.com/send/?phone=%2B971507258865&text=Hello+Majestic+Audits%2C+I+would+like+to+know+more+about+your+services.&type=phone_number&app_absent=0"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block"

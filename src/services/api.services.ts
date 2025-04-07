@@ -32,7 +32,6 @@ class ApiService {
                     }
                 }, { encode: false })
                 url.search = homePageQuery;
-                console.log('url', url.href);
                 const response = await fetchAPI(url.href, { method: "GET" });
 
                 if (!response || !response.data) {
@@ -41,7 +40,6 @@ class ApiService {
 
                 return response;
             } catch (error) {
-                console.error('Error fetching homepage data:', error);
                 throw error;
             }
         }
@@ -76,7 +74,6 @@ class ApiService {
             cache.set(cacheKey, response);
             return response;
         } catch (error) {
-            console.error('Error fetching homepage data:', error);
             throw error;
         }
     }
@@ -88,7 +85,6 @@ class ApiService {
             const response = await fetchAPI(url.href, { method: "GET" });
             return response;
         } catch (error) {
-            console.error('Error in fetchBlogData:', error);
             throw error;
         }
     }
@@ -100,7 +96,6 @@ class ApiService {
             const response = await fetchAPI(url.href, { method: "GET" });
             return response;
         } catch (error) {
-            console.error('Error fetching blog post:', error);
             throw error;
         }
     }
@@ -112,7 +107,6 @@ class ApiService {
             const response = await fetchAPI(url.href, { method: "GET" });
             return response;
         } catch (error) {
-            console.error('Error fetching services:', error);
             throw error;
         }
     }
@@ -135,7 +129,6 @@ class ApiService {
             const response = await fetchAPI(url.href, { method: "GET" });
             return response;
         } catch (error) {
-            console.error('Error fetching about page data:', error);
             throw error;
         }
     }
@@ -143,10 +136,6 @@ class ApiService {
     static async postContactForm(data: ContactFormData) {
         try {
             const url = new URL("/api/contact-infos", this.baseUrl);
-
-            if (!data.name || !data.email || !data.service || !data.message) {
-                throw new Error('Missing required fields');
-            }
 
             const response = await fetchAPI(url.href, {
                 method: "POST",
@@ -159,7 +148,6 @@ class ApiService {
 
             return response;
         } catch (error) {
-            console.error('Error posting contact form:', error);
             throw error;
         }
     }
@@ -171,7 +159,6 @@ class ApiService {
             const response = await fetchAPI(url.href, { method: "GET" });
             return response;
         } catch (error) {
-            console.error('Error fetching blog page data:', error);
             throw error;
         }
     }
@@ -189,7 +176,6 @@ class ApiService {
             const response = await fetchAPI(url.href, { method: "GET" });
             return response;
         } catch (error) {
-            console.error('Error fetching contactus page data:', error);
             throw error;
         }
     }

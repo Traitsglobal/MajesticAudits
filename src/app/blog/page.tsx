@@ -15,8 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
             description: blogData.data.metadata.metaDescription,
             keywords: blogData.data.metadata.MetaKeywords,
         });
-    } catch (error) {
-        console.error('Error generating metadata:', error);
+    } catch {
         return generatePageMetadata('blog');
     }
 }

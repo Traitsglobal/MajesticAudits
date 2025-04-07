@@ -78,7 +78,6 @@ export default function ContactPageClient({ contactData }: { contactData: Contac
             })
 
             if (response && response.data) {
-                console.log('response', response)
                 setIsSubmitted(true)
                 toast.success("Thank you for your message! We'll get back to you shortly.")
                 
@@ -92,8 +91,7 @@ export default function ContactPageClient({ contactData }: { contactData: Contac
             } else {
                 toast.error("Failed to send message. Please try again later.")
             }
-        } catch (error) {
-            console.error('Error submitting form:', error)
+        } catch {
             toast.error("Failed to send message. Please try again later.")
         } finally {
             setIsSubmitting(false)
@@ -235,7 +233,7 @@ export default function ContactPageClient({ contactData }: { contactData: Contac
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
-                                            className="px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-[#002147] transition-colors disabled:opacity-70 flex items-center"
+                                            className="px-6 py-3 bg-[#002147] text-white font-medium rounded-md hover:bg-[#003366] transition-colors disabled:opacity-70 flex items-center"
                                         >
                                             {isSubmitting ? (
                                                 <>Sending...</>

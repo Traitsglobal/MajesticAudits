@@ -18,8 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             keywords: post.tags,
             author: post.author
         });
-    } catch (error) {
-        console.error('Error generating metadata:', error);
+    } catch {
         return generatePageMetadata('blog');
     }
 }

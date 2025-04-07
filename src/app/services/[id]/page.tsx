@@ -37,8 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: service.content[0].children[0].text,
             keywords: service.metaKeywords?.join(', '),
         });
-    } catch (error) {
-        console.error('Error generating metadata:', error)
+    } catch {
         return generatePageMetadata('services');
     }
 }

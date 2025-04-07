@@ -5,14 +5,12 @@ import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useServices } from "@/hooks/useServices"
-import { Loader2 } from "lucide-react"
 import { HeaderBlock } from "@/types/block"
 import { getStrapiMedia } from "@/lib/utils"
 
 export default function MainNavigation({ name, logo }: HeaderBlock) {
-    console.log('main navigation data', { name, logo })
     const pathname = usePathname()
-    const { services, isLoading, error } = useServices()
+    const { services, isLoading } = useServices()
 
     const isActive = (path: string) => {
         if (path === "/") {
@@ -20,6 +18,63 @@ export default function MainNavigation({ name, logo }: HeaderBlock) {
         }
         return pathname.startsWith(path)
     }
+
+    // Don't render services dropdown until data is loaded
+    const renderServicesDropdown = () => {
+        if (isLoading) {
+            return (
+                <div className="relative group">
+                    <div className="flex items-center text-white font-medium">
+                        SERVICES
+                        <ChevronDown
+                            size={16}
+                            className="ml-1"
+                        />
+                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="relative group">
+                <Link
+                    href={`/services/${services[0]?.slug}`}
+                    className={`flex items-center hover:text-[#f26522] font-medium group-hover:text-[#f26522] ${isActive("/services") ? "text-[#f26522]" : ""}`}
+                    aria-label="View our services"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                >
+                    SERVICES
+                    <ChevronDown
+                        size={16}
+                        className="ml-1 transform transition-transform duration-200 group-hover:rotate-180"
+                        aria-hidden="true"
+                    />
+                </Link>
+                <div
+                    className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 -translate-y-1 transition-all duration-200 bg-white min-w-[240px] shadow-lg z-50 mt-2 rounded-md border border-gray-100"
+                    role="menu"
+                >
+                    <div className="py-2">
+                        {services.map((service) => (
+                            <Link
+                                key={service?.id}
+                                href={`/services/${service?.slug}`}
+                                className="block px-5 py-3 hover:bg-gray-50 text-gray-700 hover:text-[#f26522] transition-all duration-150 text-sm font-medium border-b border-gray-50 last:border-0 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-[#f26522] before:transform before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:duration-200 before:origin-top"
+                                aria-label={`Learn more about our ${service?.title} service`}
+                                role="menuitem"
+                            >
+                                <span className="inline-block transform transition-transform duration-150 hover:scale-[1.02]">
+                                    {service?.title}
+                                </span>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="w-full bg-[#003366]">
             <nav className="container mx-auto text-white py-8 px-4">
@@ -57,50 +112,7 @@ export default function MainNavigation({ name, logo }: HeaderBlock) {
                         >
                             ABOUT
                         </Link>
-                        <div className="relative group">
-                            <Link
-                                href={`/services/${services[0]?.slug}`}
-                                className={`flex items-center hover:text-[#f26522] font-medium group-hover:text-[#f26522] ${isActive("/services") ? "text-[#f26522]" : ""}`}
-                                aria-label="View our services"
-                                aria-expanded="false"
-                                aria-haspopup="true"
-                            >
-                                SERVICES
-                                <ChevronDown
-                                    size={16}
-                                    className="ml-1 transform transition-transform duration-200 group-hover:rotate-180"
-                                    aria-hidden="true"
-                                />
-                            </Link>
-                            <div
-                                className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 -translate-y-1 transition-all duration-200 bg-white/100 min-w-[240px] shadow-lg z-10 mt-2 rounded-md border border-gray-100"
-                                role="menu"
-                            >
-                                {isLoading ? (
-                                    <div className="flex justify-center p-4">
-                                        <Loader2 className="h-5 w-5 animate-spin text-[#003366]" />
-                                    </div>
-                                ) : error ? (
-                                    <div className="p-4 text-sm text-red-500">Failed to load services</div>
-                                ) : (
-                                    <div className="py-2 bg-white">
-                                        {services.map((service) => (
-                                            <Link
-                                                key={service?.id}
-                                                href={`/services/${service?.slug}`}
-                                                className="block px-5 py-3 hover:bg-gray-50 text-gray-700 hover:text-[#f26522] transition-all duration-150 text-sm font-medium border-b border-gray-50 last:border-0 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-[#f26522] before:transform before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:duration-200 before:origin-top"
-                                                aria-label={`Learn more about our ${service?.title} service`}
-                                                role="menuitem"
-                                            >
-                                                <span className="inline-block transform transition-transform duration-150 hover:scale-[1.02]">
-                                                    {service?.title}
-                                                </span>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                        {renderServicesDropdown()}
                         <Link
                             href="/blog"
                             className={`hover:text-[#f26522] font-medium ${isActive("/blog") ? "text-[#f26522]" : ""}`}

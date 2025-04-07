@@ -31,11 +31,57 @@ export async function generateMetadata(): Promise<Metadata> {
       description: metadata.metaDescription,
       keywords: metadata.MetaKeywords,
       author: metadata.MetaAuthor,
+      icons: {
+        icon: [
+          { url: '/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+          { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        ],
+        apple: [
+          { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+        ],
+        other: [
+          {
+            rel: 'mask-icon',
+            url: '/icons/android-chrome-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            rel: 'mask-icon',
+            url: '/icons/android-chrome-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
     });
-  } catch (error) {
-    console.error('Error fetching metadata:', error);
+  } catch  {
     // Return default metadata if there's an error
-    return generatePageMetadata('home');
+    return generatePageMetadata('home', {
+      icons: {
+        icon: [
+          { url: '/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+          { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        ],
+        apple: [
+          { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+        ],
+        other: [
+          {
+            rel: 'mask-icon',
+            url: '/icons/android-chrome-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            rel: 'mask-icon',
+            url: '/icons/android-chrome-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+    });
   }
 }
 
@@ -63,8 +109,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       keywords: metadata.MetaKeywords,
       author: metadata.MetaAuthor,
     });
-  } catch (error) {
-    console.error('Error fetching homepage data:', error);
+  } catch {
     // Generate default metadata if there's an error
     generatePageMetadata('home');
     homepageData = { data: { blocks: [] } };
@@ -76,6 +121,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/icons/favicon-16x16.png" sizes="16x16" type="image/png" />
+        <link rel="icon" href="/icons/favicon-32x32.png" sizes="32x32" type="image/png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" type="image/png" />
+        <link rel="mask-icon" href="/icons/android-chrome-192x192.png" sizes="192x192" type="image/png" color="#003366" />
+        <link rel="mask-icon" href="/icons/android-chrome-512x512.png" sizes="512x512" type="image/png" color="#003366" />
+        <meta name="theme-color" content="#003366" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      </head>
       <body className={inter.className}>
         <div className="md:block hidden">
           {layoutBlocks.map((block: Blocks) => (

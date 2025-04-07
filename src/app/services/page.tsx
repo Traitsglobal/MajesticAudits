@@ -11,8 +11,7 @@ export default async function ServicesPage() {
         }
         
         redirect(`/services/${firstService.attributes.slug}`)
-    } catch (error) {
-        console.error('Error fetching service data:', error)
+    } catch {
         redirect('/services/overview')
     }
 }

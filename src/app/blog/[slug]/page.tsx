@@ -27,8 +27,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
             try {
                 const response = await ApiService.fetchBlogPost(documentId);
                 setPost(response.data)
-            } catch (error) {
-                console.error('Error fetching blog post:', error);
+            } catch {
             } finally {
                 setLoading(false)
             }
@@ -38,8 +37,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
             try {
                 const response = await ApiService.fetchBlogData();
                 setBlogPosts(response.data || []);
-            } catch (error) {
-                console.error('Error fetching blog posts:', error);
+            } catch {
             }
         }
 
@@ -199,9 +197,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
         });
     };
 
-    const handleSearch = (query: string) => {
-        // Implement search functionality if needed
-        console.log('Search query:', query);
+    const handleSearch = () => {
     }
 
     return (

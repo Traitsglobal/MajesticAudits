@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react"
 
 export default function ServicesOverviewContent() {
     const { services, isLoading, error } = useServices();
-    console.log('services', services);
 
     if (isLoading) {
         return (

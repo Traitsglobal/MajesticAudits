@@ -8,7 +8,6 @@ import { getStrapiMedia } from "@/lib/utils"
 import { BlogPost } from '@/types/blog'
 import { useBlogData } from '@/hooks/useBlogData'
 
-// Helper function to get unique categories and their counts
 const getCategoryCounts = (posts: BlogPost[]) => {
     const counts: Record<string, number> = {}
     posts.forEach((post) => {
@@ -28,10 +27,9 @@ export default function BlogSection() {
     const totalSlides = Math.max(1, Math.ceil((posts?.length || 0) / visiblePosts))
     const categoryCounts = getCategoryCounts(posts)
 
-    // Get posts for current slide
     const getCurrentPosts = () => {
         if (!posts?.length) return []
-        
+
         const startIndex = currentIndex * visiblePosts
         const endIndex = startIndex + visiblePosts
         const currentPosts = posts.slice(startIndex, Math.min(endIndex, posts.length))
@@ -39,25 +37,21 @@ export default function BlogSection() {
         return currentPosts
     }
 
-    // Handle next slide with useCallback
     const nextSlide = useCallback(() => {
         if (!posts?.length) return
 
         if (window.innerWidth >= 768) {
             setCurrentIndex((prevIndex) => {
-                // Calculate the actual last index based on remaining posts
                 const lastIndex = Math.ceil(posts.length / visiblePosts) - 1
-                // Only reset to 0 if we're at the last index
                 return prevIndex >= lastIndex ? 0 : prevIndex + 1
             })
         } else {
-            setCurrentIndex((prevIndex) => 
+            setCurrentIndex((prevIndex) =>
                 prevIndex >= posts.length - 1 ? 0 : prevIndex + 1
             )
         }
     }, [posts, visiblePosts])
 
-    // Handle previous slide
     const prevSlide = useCallback(() => {
         if (!posts?.length) return
 
@@ -67,18 +61,15 @@ export default function BlogSection() {
                 return prevIndex <= 0 ? lastIndex : prevIndex - 1
             })
         } else {
-            setCurrentIndex((prevIndex) => 
+            setCurrentIndex((prevIndex) =>
                 prevIndex <= 0 ? posts.length - 1 : prevIndex - 1
             )
         }
     }, [posts, visiblePosts])
 
-    // Reset currentIndex when posts change
-    useEffect(() => {
-        setCurrentIndex(0)
-    }, [posts])
 
-    // Format date helper
+    useEffect(() => { setCurrentIndex(0) }, [posts])
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString)
         return date.toLocaleDateString('en-US', {
@@ -112,30 +103,30 @@ export default function BlogSection() {
                     {/* Blog posts grid skeleton */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[1, 2, 3].map((i) => (
-                            <div 
-                                key={i} 
+                            <div
+                                key={i}
                                 className="flex flex-col h-[400px] border border-gray-200 rounded-xl overflow-hidden"
                             >
                                 {/* Image placeholder */}
                                 <div className="relative h-52 w-full bg-gray-200"></div>
-                                
+
                                 <div className="p-4 flex flex-col flex-grow animate-pulse">
                                     {/* Date and category placeholder */}
                                     <div className="flex gap-2 mb-2">
                                         <div className="h-5 bg-gray-200 w-24"></div>
                                         <div className="h-5 bg-gray-200 w-32"></div>
                                     </div>
-                                    
+
                                     {/* Title placeholder */}
                                     <div className="h-12 bg-gray-200 w-full mb-2"></div>
-                                    
+
                                     {/* Content placeholder */}
                                     <div className="space-y-2 flex-grow">
                                         <div className="h-4 bg-gray-200 w-full"></div>
                                         <div className="h-4 bg-gray-200 w-5/6"></div>
                                         <div className="h-4 bg-gray-200 w-4/6"></div>
                                     </div>
-                                    
+
                                     {/* Read more link placeholder */}
                                     <div className="h-5 bg-gray-200 w-24 mt-auto"></div>
                                 </div>
@@ -162,7 +153,11 @@ export default function BlogSection() {
                         <h3 className="text-gray-600 font-medium uppercase tracking-wider">OUR BLOG</h3>
                         <h2 className="text-4xl md:text-5xl font-bold mt-2 text-black">Our latest news</h2>
                     </div>
-                    <Link href="/blog" className="text-[#003366] hover:underline mt-4 md:mt-0">
+                    <Link
+                        href="/blog"
+                        className="text-[#003366] hover:underline mt-4 md:mt-0"
+                        aria-label="View all blog posts"
+                    >
                         View all posts
                     </Link>
                 </div>
@@ -212,13 +207,20 @@ export default function BlogSection() {
                                             }}
                                             className="text-[#003366] font-medium border-b border-[#003366] px-2 py-0.5 rounded-sm"
                                             prefetch={false}
+                                            aria-label={`View all posts in category: ${post.categories}`}
                                         >
                                             {post.categories}
                                         </Link>
+
                                     </div>
 
                                     <h3 className="text-lg font-bold mb-2 hover:text-[#003366] transition-colors line-clamp-2">
-                                        <Link href={`/blog/${post.documentId}`}>{post.title}</Link>
+                                        <Link
+                                            href={`/blog/${post.documentId}`}
+                                            aria-label={`Read full article: ${post.title}`}
+                                        >
+                                            {post.title}
+                                        </Link>
                                     </h3>
 
                                     <p className="text-gray-600 mb-3 flex-grow text-sm line-clamp-3">
@@ -228,8 +230,9 @@ export default function BlogSection() {
                                     <Link
                                         href={`/blog/${post.documentId}`}
                                         className="text-[#003366] font-medium hover:underline mt-auto inline-block text-sm"
+                                        aria-label={`Read full article: ${post.title}`}
                                     >
-                                        Read more
+                                        Read more about {post.title}
                                     </Link>
                                 </div>
                             </div>
@@ -297,12 +300,18 @@ export default function BlogSection() {
                                                     }}
                                                     className="text-[#003366] font-medium border-b border-[#003366] px-2 py-0.5 rounded-sm"
                                                     prefetch={false}
+                                                    aria-label={`View all posts in category: ${post.categories}`}
                                                 >
                                                     {post.categories}
                                                 </Link>
                                             </div>
                                             <h3 className="text-lg font-bold mb-2 line-clamp-2">
-                                                <Link href={`/blog/${post.documentId}`}>{post.title}</Link>
+                                                <Link
+                                                    href={`/blog/${post.documentId}`}
+                                                    aria-label={`Read full article: ${post.title}`}
+                                                >
+                                                    {post.title}
+                                                </Link>
                                             </h3>
                                             <p className="text-sm text-gray-600 mb-3 line-clamp-3">
                                                 {post.content[0]?.children[0]?.text || ''}
@@ -310,8 +319,9 @@ export default function BlogSection() {
                                             <Link
                                                 href={`/blog/${post.documentId}`}
                                                 className="text-[#003366] text-sm font-medium hover:underline mt-auto inline-block"
+                                                aria-label={`Read full article: ${post.title}`}
                                             >
-                                                Read more
+                                                Read more about {post.title}
                                             </Link>
                                         </div>
                                     </div>

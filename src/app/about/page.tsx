@@ -10,8 +10,7 @@ export async function generateStaticParams() {
     try {
         await getAboutPageData()
         return []
-    } catch (error) {
-        console.error('Error pre-generating about page:', error)
+    } catch {
         return []
     }
 }
@@ -27,8 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
             keywords: metadata.MetaKeywords,
             author: metadata.MetaAuthor,
         });
-    } catch (error) {
-        console.error('Error generating metadata:', error);
+    } catch {
         return generatePageMetadata('about');
     }
 }
@@ -39,7 +37,6 @@ export default async function AboutPage() {
         
         // Validate that we have the required data
         if (!response?.data?.blocks) {
-            console.error('Blocks data not found in the response');
             return (
                 <main className="bg-white">
                     <div className="container mx-auto px-4 py-12 max-w-6xl">
@@ -53,8 +50,7 @@ export default async function AboutPage() {
         }
 
         return <AboutPageClient data={response.data} />
-    } catch (error) {
-        console.error('Error fetching about page:', error)
+    } catch {
         return (
             <main className="bg-white">
                 <div className="container mx-auto px-4 py-12 max-w-6xl">

@@ -22,13 +22,12 @@ export default function ContactForm() {
         formState: { errors },
     } = useForm<FormData>()
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async () => {
         setIsSubmitting(true)
 
         // Simulate form submission
         await new Promise((resolve) => setTimeout(resolve, 1500))
 
-        console.log("Form submitted:", data)
         setIsSubmitted(true)
         setIsSubmitting(false)
         reset()

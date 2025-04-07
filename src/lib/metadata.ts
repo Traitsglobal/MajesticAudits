@@ -72,6 +72,11 @@ interface MetadataProps {
   description?: string
   keywords?: string
   author?: string
+  icons?: {
+    icon?: Array<{ url: string; sizes: string; type: string }>
+    apple?: Array<{ url: string; sizes: string; type: string }>
+    other?: Array<{ rel: string; url: string; sizes: string; type: string; color?: string }>
+  }
 }
 
 export function generatePageMetadata(page: string, props?: MetadataProps): Metadata {

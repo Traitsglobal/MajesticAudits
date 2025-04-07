@@ -101,58 +101,39 @@ export default function ServicesSection() {
                                     backgroundColor: "#003366",
                                     color: "#ffffff",
                                     scale: 1.05,
-                                    boxShadow: "0 15px 30px -5px rgba(0, 0, 0, 0.15), 0 10px 15px -5px rgba(0, 0, 0, 0.1)",
                                     transition: {
                                         duration: 0.3,
                                         ease: "easeOut",
                                     },
                                 }}
                             >
-                                {/* Icon container with hide animation on hover */}
-                                <motion.div
-                                    className="mb-3 md:mb-4 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#FF6B35] flex items-center justify-center"
-                                    initial={{ opacity: 1, y: 0 }}
-                                    whileHover={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
-                                    transition={{ duration: 0.3 }}
-                                >
+                                {/* Icon container */}
+                                <div className="mb-3 md:mb-4 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#FF6B35] flex items-center justify-center">
                                     <div className="scale-75 md:scale-100">
                                         {serviceIcons[service.slug] || <Briefcase size={32} />}
                                     </div>
-                                </motion.div>
+                                </div>
 
-                                {/* Content container with text-up animation */}
-                                <motion.div className="flex flex-col flex-grow" whileHover={{ y: -15, transition: { duration: 0.3 } }}>
-                                    <motion.h3
-                                        className="text-lg md:text-xl font-bold mb-2 md:mb-3"
-                                        whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                                    >
+                                {/* Content container */}
+                                <div className="flex flex-col flex-grow">
+                                    <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">
                                         {service.title}
-                                    </motion.h3>
+                                    </h3>
 
-                                    <motion.p
-                                        className="text-sm md:text-base mb-3 md:mb-4 flex-grow line-clamp-3"
-                                        whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                                    >
+                                    <p className="text-sm md:text-base mb-3 md:mb-4 flex-grow line-clamp-3">
                                         {service.content[0]?.children[0]?.text}
-                                    </motion.p>
-                                </motion.div>
+                                    </p>
+                                </div>
 
-                                {/* Read more link that stays visible */}
-                                <motion.div
-                                    className="mt-auto"
-                                    whileHover={{
-                                        color: "#FF6B35",
-                                        x: 5,
-                                        transition: { duration: 0.2 },
-                                    }}
-                                >
+                                {/* Read more link */}
+                                <div className="mt-auto">
                                     <Link 
                                         href={`/services/${service.slug}`} 
                                         className="text-xs md:text-sm font-medium hover:underline inline-block"
                                     >
                                         Read more about {service.title.toLowerCase()}
                                     </Link>
-                                </motion.div>
+                                </div>
                             </motion.div>
                         </motion.div>
                     ))}

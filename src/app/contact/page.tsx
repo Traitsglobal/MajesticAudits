@@ -13,8 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
             description: contactData.data.metadata.metaDescription,
             keywords: contactData.data.metadata.MetaKeywords,
         });
-    } catch (error) {
-        console.error('Error generating metadata:', error);
+    } catch {
         return generatePageMetadata('contact');
     }
 }
@@ -25,7 +24,6 @@ export default async function ContactPage() {
         
         // Validate that we have the required data
         if (!contactData?.data?.contactdetails) {
-            console.error('Contact details not found in the response');
             return (
                 <main>
                     <div className="container mx-auto px-4 py-12 max-w-6xl">
@@ -66,8 +64,7 @@ export default async function ContactPage() {
                 <ContactPageClient contactData={contactData.data} />
             </main>
         )
-    } catch (error) {
-        console.error('Error loading contact page:', error);
+    } catch {
         return (
             <main>
                 <div className="container mx-auto px-4 py-12 max-w-6xl">

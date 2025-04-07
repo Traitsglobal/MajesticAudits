@@ -24,7 +24,6 @@ export const revalidate = 7200; // Revalidate every 2 hours
 
 export default async function Home() {
   const homepageData = await ApiService.fetchHomepageData();
-  console.log('homepageData', homepageData);
   const contentBlocks = homepageData.data.blocks.filter(
     (block: Blocks) => block.__component === 'layout.hero'
   );

@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
         port: '1337',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'http',
+        hostname: ' ',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'majestic.hopto.org',
+        pathname: '/uploads/**',
+      },
       // Add your production domain when deploying
       // {
       //   protocol: 'https',
