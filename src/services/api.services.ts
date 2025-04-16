@@ -15,42 +15,17 @@ class ApiService {
     private static baseUrl: string = getStrapiURL()
 
     static async fetchHomepageData() {
-        // Skip caching in development environment
-        if (true) {
-            try {
-                const url = new URL("/api/home-page", this.baseUrl);
-                const homePageQuery = qs.stringify({
-                    populate: {
-                        blocks: {
-                            on: {
-                                "layout.topbar": { populate: { DigitalPlatforms: { populate: "*" } } },
-                                "layout.header": { populate: "*" },
-                                "layout.hero": { populate: { Carosel: { populate: "*" } } },
-                            }
-                        },
-                        metadata: true
-                    }
-                }, { encode: false })
-                url.search = homePageQuery;
-                const response = await fetchAPI(url.href, { method: "GET" });
-
-                if (!response || !response.data) {
-                    throw new Error('Failed to fetch homepage data');
-                }
-
-                return response;
-            } catch (error) {
-                throw error;
+        // Use caching in production environment
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        
+        // Check cache first in production
+        if (!isDevelopment) {
+            const cacheKey = 'homepage';
+            if (cache.has(cacheKey)) {
+                return cache.get(cacheKey);
             }
         }
 
-        // Use caching only in production
-        const cacheKey = 'homepage';
-        if (cache.has(cacheKey)) {
-            return cache.get(cacheKey);
-        }
-
-        // Rest of the production caching logic...
         try {
             const url = new URL("/api/home-page", this.baseUrl);
             const homePageQuery = qs.stringify({
@@ -61,20 +36,43 @@ class ApiService {
                             "layout.header": { populate: "*" },
                             "layout.hero": { populate: { Carosel: { populate: "*" } } },
                         }
-                    }
+                    },
+                    metadata: true
                 }
             }, { encode: false })
             url.search = homePageQuery;
-            const response = await fetchAPI(url.href, { method: "GET" });
+            
+            const response = await fetchAPI(url.href, { 
+                method: "GET",
+                next: { revalidate: 7200 } // Revalidate every 2 hours
+            });
 
             if (!response || !response.data) {
-                throw new Error('Failed to fetch homepage data');
+                console.error('Homepage data fetch failed:', response);
+                // Return a minimal valid response structure instead of throwing
+                return {
+                    data: {
+                        blocks: [],
+                        metadata: {}
+                    }
+                };
             }
 
-            cache.set(cacheKey, response);
+            // Cache the response in production
+            if (!isDevelopment) {
+                cache.set('homepage', response);
+            }
+
             return response;
         } catch (error) {
-            throw error;
+            console.error('Error fetching homepage data:', error);
+            // Return a minimal valid response structure instead of throwing
+            return {
+                data: {
+                    blocks: [],
+                    metadata: {}
+                }
+            };
         }
     }
 

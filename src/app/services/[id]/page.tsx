@@ -43,9 +43,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-    const response = await ApiService.fetchServiceData()
-    const services = response.data
-    return [...services.map((service: Service) => ({ id: service.id.toString() })), { id: "overview" }]
+    try {
+        const response = await ApiService.fetchServiceData()
+        if (!response?.data) {
+            return [{ id: "overview" }]
+        }
+        const services = response.data
+        return [...services.map((service: Service) => ({ id: service.slug.toString() })), { id: "overview" }]
+    } catch (error) {
+        console.error('Error generating static params:', error)
+        return [{ id: "overview" }]
+    }
 }
 
 function RichText({ content }: { content: ServiceContent[] }) {
