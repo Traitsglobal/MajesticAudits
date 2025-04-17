@@ -7,10 +7,16 @@ import { usePathname } from "next/navigation"
 import { useServices } from "@/hooks/useServices"
 import { HeaderBlock } from "@/types/block"
 import { getStrapiMedia } from "@/lib/utils"
+import { useState, useEffect } from "react"
 
 export default function MainNavigation({ name, logo }: HeaderBlock) {
+    const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const { services, isLoading } = useServices()
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     const isActive = (path: string) => {
         if (path === "/") {
@@ -75,6 +81,26 @@ export default function MainNavigation({ name, logo }: HeaderBlock) {
         )
     }
 
+    // If not mounted, render a placeholder to avoid hydration issues
+    if (!mounted) {
+        return (
+            <div className="w-full bg-[#003366]">
+                <nav className="container mx-auto text-white py-8 px-4">
+                    <div className="flex justify-between items-center">
+                        <div className="w-20 h-20 bg-gray-300 rounded-sm"></div>
+                        <div className="hidden md:flex space-x-8">
+                            <div className="h-6 w-20 bg-gray-300 rounded"></div>
+                            <div className="h-6 w-20 bg-gray-300 rounded"></div>
+                            <div className="h-6 w-20 bg-gray-300 rounded"></div>
+                            <div className="h-6 w-20 bg-gray-300 rounded"></div>
+                            <div className="h-6 w-20 bg-gray-300 rounded"></div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        )
+    }
+
     return (
         <div className="w-full bg-[#003366]">
             <nav className="container mx-auto text-white py-8 px-4">
@@ -101,14 +127,14 @@ export default function MainNavigation({ name, logo }: HeaderBlock) {
                         <Link
                             href="/"
                             className={`hover:text-[#f26522] font-medium ${isActive("/") ? "text-[#f26522]" : ""}`}
-                            aria-label="Navigate to Homepage"
+                            aria-label="Return to Homepage"
                         >
                             HOME
                         </Link>
                         <Link
                             href="/about"
                             className={`hover:text-[#f26522] font-medium ${isActive("/about") ? "text-[#f26522]" : ""}`}
-                            aria-label="Learn more about Majestic"
+                            aria-label="Learn more about us"
                         >
                             ABOUT
                         </Link>
@@ -116,14 +142,14 @@ export default function MainNavigation({ name, logo }: HeaderBlock) {
                         <Link
                             href="/blog"
                             className={`hover:text-[#f26522] font-medium ${isActive("/blog") ? "text-[#f26522]" : ""}`}
-                            aria-label="Read our latest articles and insights"
+                            aria-label="Read our blog"
                         >
                             BLOG
                         </Link>
                         <Link
                             href="/contact"
                             className={`hover:text-[#f26522] font-medium ${isActive("/contact") ? "text-[#f26522]" : ""}`}
-                            aria-label="Get in touch with us"
+                            aria-label="Contact us"
                         >
                             CONTACT
                         </Link>

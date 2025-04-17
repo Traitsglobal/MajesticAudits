@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -9,9 +9,18 @@ import { usePathname } from "next/navigation"
 // Import the services data
 
 export default function MobileHeader() {
+    const [mounted, setMounted] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isServicesOpen, setIsServicesOpen] = useState(false)
     const pathname = usePathname()
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return null
+    }
 
     const isActive = (path: string) => {
         if (path === "/") {

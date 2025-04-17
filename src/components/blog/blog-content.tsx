@@ -15,14 +15,14 @@ interface BlogContentProps {
 
 // Add this type for search results
 interface SearchResult {
-    id: number;
+    id: string;
     title: string;
     text: string;
     documentId: string;
 }
 
 export default function BlogContent({ posts }: BlogContentProps) {
-    // State management
+    const [mounted, setMounted] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [isSearching, setIsSearching] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
@@ -31,6 +31,28 @@ export default function BlogContent({ posts }: BlogContentProps) {
     const [showResults, setShowResults] = useState(false)
     const [searchResults, setSearchResults] = useState<SearchResult[]>([])
     const searchRef = useRef<HTMLDivElement>(null)
+
+    // Mount effect
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    // Click outside handler effect
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                setShowResults(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
+    // Reset page when filters change
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [searchQuery, selectedCategory, selectedTag])
 
     // Filtering logic
     const filteredPosts = posts.filter(post => {
@@ -47,18 +69,6 @@ export default function BlogContent({ posts }: BlogContentProps) {
         return matchesSearch && matchesCategory && matchesTag
     })
 
-    // Add click outside handler
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-                setShowResults(false)
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
-
     // Update handleSearch
     const handleSearch = (query: string) => {
         setSearchQuery(query)
@@ -71,7 +81,7 @@ export default function BlogContent({ posts }: BlogContentProps) {
                     post.content[0]?.children[0]?.text?.toLowerCase().includes(query.toLowerCase())
                 )
                 .map(post => ({
-                    id: post.id,
+                    id: post.id.toString(),
                     title: post.title,
                     text: post.content[0]?.children[0]?.text || '',
                     documentId: post.documentId
@@ -90,23 +100,11 @@ export default function BlogContent({ posts }: BlogContentProps) {
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category)
-        // setCurrentPage(1)
-        // scrollToTop()
     }
 
     const handleTagChange = (tag: string) => {
         setSelectedTag(tag)
-        // setCurrentPage(1)
-        // scrollToTop()
     }
-
-    // const scrollToTop = () => {
-    //     window.scrollTo({
-    //         top: 0,
-    //         behavior: 'smooth',
-    //         left: 0
-    //     })
-    // }
 
     // Pagination
     const postsPerPage = 3
@@ -116,11 +114,6 @@ export default function BlogContent({ posts }: BlogContentProps) {
         currentPage * postsPerPage
     )
 
-    // Reset page when filters change
-    useEffect(() => {
-        setCurrentPage(1)
-    }, [searchQuery, selectedCategory, selectedTag])
-
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -129,6 +122,10 @@ export default function BlogContent({ posts }: BlogContentProps) {
             year: 'numeric'
         });
     };
+
+    if (!mounted) {
+        return null
+    }
 
     const BlogCardSkeleton = () => (
         <div className="bg-white rounded-lg overflow-hidden shadow-md mb-8 flex flex-col">

@@ -74,7 +74,6 @@ export default function ContactPageClient({ contactData }: { contactData: Contac
                     service: formData.service,
                     message: formData.message,
                     date: new Date().toISOString(),
-                
             })
 
             if (response && response.data) {

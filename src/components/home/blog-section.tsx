@@ -201,10 +201,7 @@ export default function BlogSection() {
                                     <div className="mb-2 text-sm text-gray-500">
                                         {formatDate(post.date)} |{" "}
                                         <Link
-                                            href={{
-                                                pathname: '/blog/category/[category]',
-                                                query: { category: post.categories }
-                                            }}
+                                            href={`/blog?category=${encodeURIComponent(post.categories)}`}
                                             className="text-[#003366] font-medium border-b border-[#003366] px-2 py-0.5 rounded-sm"
                                             prefetch={false}
                                             aria-label={`View all posts in category: ${post.categories}`}
@@ -294,10 +291,7 @@ export default function BlogSection() {
                                             <div className="mb-2 text-xs text-gray-500">
                                                 {formatDate(post.date)} |{" "}
                                                 <Link
-                                                    href={{
-                                                        pathname: '/blog/category/[category]',
-                                                        query: { category: post.categories }
-                                                    }}
+                                                    href={`/blog?category=${encodeURIComponent(post.categories)}`}
                                                     className="text-[#003366] font-medium border-b border-[#003366] px-2 py-0.5 rounded-sm"
                                                     prefetch={false}
                                                     aria-label={`View all posts in category: ${post.categories}`}

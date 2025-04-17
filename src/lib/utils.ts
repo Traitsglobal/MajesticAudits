@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getStrapiURL() {
-  // return process.env.STRAPI_API_URL ?? "http://ec2-3-83-151-210.compute-1.amazonaws.com";
-  return process.env.STRAPI_API_URL ?? "http://localhost:1337";
+  // Use a consistent URL for both server and client
+  return process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337";
 }
 
 export function getStrapiMedia(url: string | null) {
