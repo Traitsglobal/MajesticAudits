@@ -8,24 +8,11 @@ interface BlogResponse {
     data: BlogPost;
 }
 
-const cache = new Map();
-
 class ApiService {
 
     private static baseUrl: string = getStrapiURL();
 
     static async fetchHomepageData() {
-        // Use caching in production environment
-        const isDevelopment = process.env.NODE_ENV === 'development';
-
-        // Check cache first in production
-        if (!isDevelopment) {
-            const cacheKey = 'homepage';
-            if (cache.has(cacheKey)) {
-                return cache.get(cacheKey);
-            }
-        }
-
         try {
             const url = new URL("/api/home-page", this.baseUrl);
             const homePageQuery = qs.stringify({
@@ -42,10 +29,7 @@ class ApiService {
             }, { encode: false })
             url.search = homePageQuery;
 
-            const response = await fetchAPI(url.href, {
-                method: "GET",
-                next: { revalidate: 7200 } // Revalidate every 2 hours
-            });
+            const response = await fetchAPI(url.href, { method: "GET", next: { revalidate: 7200 } });
 
             if (!response || !response.data) {
                 console.error('Homepage data fetch failed:', response);
@@ -56,11 +40,6 @@ class ApiService {
                         metadata: {}
                     }
                 };
-            }
-
-            // Cache the response in production
-            if (!isDevelopment) {
-                cache.set('homepage', response);
             }
 
             return response;

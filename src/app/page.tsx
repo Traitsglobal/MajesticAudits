@@ -28,7 +28,7 @@ export default async function Home() {
     const contentBlocks = homepageData.data.blocks?.filter(
       (block: Blocks) => block.__component === 'layout.hero'
     ) || [];
-
+    console.log(homepageData);
     return (
       <main>
         <div className="md:hidden">
