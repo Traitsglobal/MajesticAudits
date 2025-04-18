@@ -188,7 +188,7 @@ export default function BlogSection() {
                                 key={post.id}
                                 className="flex flex-col h-[400px] border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-2"
                             >
-                                <div className="relative h-52 w-full">
+                                <div className="relative h-64 w-full">
                                     <Image
                                         src={getStrapiMedia(post.Image?.url) || "/images/placeholder.jpg"}
                                         alt={post.title}
@@ -202,7 +202,7 @@ export default function BlogSection() {
                                         {formatDate(post.date)} |{" "}
                                         <Link
                                             href={`/blog?category=${encodeURIComponent(post.categories)}`}
-                                            className="text-[#003366] font-medium border-b border-[#003366] px-2 py-0.5 rounded-sm"
+                                            className="text-[#003366] font-medium px-2 py-0.5 rounded-sm"
                                             prefetch={false}
                                             aria-label={`View all posts in category: ${post.categories}`}
                                         >
@@ -229,7 +229,7 @@ export default function BlogSection() {
                                         className="text-[#003366] font-medium hover:underline mt-auto inline-block text-sm"
                                         aria-label={`Read full article: ${post.title}`}
                                     >
-                                        Read more about {post.title}
+                                        Read more
                                     </Link>
                                 </div>
                             </div>

@@ -12,12 +12,12 @@ const cache = new Map();
 
 class ApiService {
 
-    private static baseUrl: string = getStrapiURL()
+    private static baseUrl: string = getStrapiURL();
 
     static async fetchHomepageData() {
         // Use caching in production environment
         const isDevelopment = process.env.NODE_ENV === 'development';
-        
+
         // Check cache first in production
         if (!isDevelopment) {
             const cacheKey = 'homepage';
@@ -41,8 +41,8 @@ class ApiService {
                 }
             }, { encode: false })
             url.search = homePageQuery;
-            
-            const response = await fetchAPI(url.href, { 
+
+            const response = await fetchAPI(url.href, {
                 method: "GET",
                 next: { revalidate: 7200 } // Revalidate every 2 hours
             });

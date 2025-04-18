@@ -5,9 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getStrapiURL() {
-  // Use a consistent URL for both server and client
-  return process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337";
+export function getStrapiURL(): string {
+  return process.env.NEXT_PUBLIC_STRAPI_API_URL ?? process.env.NEXT_PUBLIC_STRAPI_API_URL_DEV ?? "http://ec2-34-224-212-73.compute-1.amazonaws.com";
 }
 
 export function getStrapiMedia(url: string | null) {
