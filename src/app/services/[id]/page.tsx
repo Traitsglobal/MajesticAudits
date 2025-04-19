@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import MobileHeader from "@/components/layout/mobile-header"
 import ServiceSidebar from "@/components/services/service-sidebar"
 import ContactSupport from "@/components/services/contact-support"
-import { ChevronLeft } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import ServicesOverviewContent from "@/components/services/service-overview-content"
 import React from "react"
 import ApiService from "@/services/api.services"
@@ -191,10 +191,13 @@ export default async function ServicePage({ params }: Props) {
                         <div className="w-full md:w-3/4">
                             <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
                                 <div className="flex items-center mb-6 md:hidden">
-                                    <Link href="/services/overview" className="mr-3">
-                                        <ChevronLeft size={24} className="text-primary" />
+                                    <Link 
+                                        href="/services/overview" 
+                                        className="flex items-center text-primary hover:text-primary/80 transition-colors"
+                                    >
+                                        <ArrowLeft size={20} className="mr-1.5" />
+                                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 flex-1">{service.title}</h1>
                                     </Link>
-                                    <h1 className="text-2xl font-bold text-primary">{service.title}</h1>
                                 </div>
 
                                 <RichText content={service.content} />

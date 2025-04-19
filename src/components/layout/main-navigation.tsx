@@ -66,7 +66,7 @@ export default function MainNavigation({ name, logo }: HeaderBlock) {
                             <Link
                                 key={service?.id}
                                 href={`/services/${service?.slug}`}
-                                className="block px-5 py-3 hover:bg-gray-50 text-gray-700 hover:text-[#f26522] transition-all duration-150 text-sm font-medium border-b border-gray-50 last:border-0 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-[#f26522] before:transform before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:duration-200 before:origin-top"
+                                className="block px-5 py-3 hover:bg-gray-50 text-gray-700 hover:text-[#003366] transition-all duration-150 text-sm font-medium border-b border-gray-50 last:border-0 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-[#003366] before:transform before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:duration-200 before:origin-top"
                                 aria-label={`Learn more about our ${service?.title} service`}
                                 role="menuitem"
                             >

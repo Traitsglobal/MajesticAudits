@@ -2,16 +2,11 @@ import React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import dynamic from 'next/dynamic'
 import type { Viewport } from "next"
-import ApiService from "@/services/api.services"
-import { Blocks } from "@/types/block"
-import { blockRenderer } from "@/lib/block-renderer"
 import WhatsAppWrapper from "@/components/layout/whatsapp-wrapper"
 import { generatePageMetadata } from "@/lib/metadata"
-
-// Dynamically import heavy components
-const Footer = dynamic(() => import("@/components/layout/footer"), { loading: () => <div className="animate-pulse bg-gray-100 h-40" /> })
+import ApiService from "@/services/api.services"
+import LayoutContent from "@/components/layout/layout-content"
 
 // Optimize font loading
 const inter = Inter({
@@ -25,7 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const homepageData = await ApiService.fetchHomepageData();
     const metadata = homepageData.data.metadata;
-
     return generatePageMetadata('home', {
       title: metadata.metaTitle,
       description: metadata.metaDescription,
@@ -97,28 +91,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  let homepageData;
-  try {
-    homepageData = await ApiService.fetchHomepageData();
-    // Generate metadata using the fetched data
-    const metadata = homepageData.data.metadata;
-    generatePageMetadata('home', {
-      title: metadata.metaTitle,
-      description: metadata.metaDescription,
-      keywords: metadata.MetaKeywords,
-      author: metadata.MetaAuthor,
-    });
-  } catch {
-    // Generate default metadata if there's an error
-    generatePageMetadata('home');
-    homepageData = { data: { blocks: [] } };
-  }
-
-  const layoutBlocks = homepageData.data.blocks.filter(
-    (block: Blocks) => block.__component === 'layout.topbar' || block.__component === 'layout.header'
-  );
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -132,20 +105,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <body className={inter.className}>
-        <div className="md:block hidden">
-          {layoutBlocks.map((block: Blocks) => (
-            <React.Suspense
-              key={`${block.__component}-${block.id}`}
-              fallback={<div className="animate-pulse bg-gray-100 h-20" />}
-            >
-              {blockRenderer(block)}
-            </React.Suspense>
-          ))}
-        </div>
-        <div className="flex flex-col min-h-screen">
+        <LayoutContent>
           {children}
-          <Footer />
-        </div>
+        </LayoutContent>
         <WhatsAppWrapper />
       </body>
     </html>

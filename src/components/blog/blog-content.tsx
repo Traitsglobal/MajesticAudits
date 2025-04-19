@@ -8,6 +8,7 @@ import { BlogPost } from '@/types/blog'
 import BlogSidebar from "@/components/blog/blog-sidebar"
 import Pagination from "@/components/blog/pagination"
 import { Skeleton } from "@/components/ui/skeleton"
+import { BlogGridSkeleton } from "./blog-grid-skeleton"
 
 interface BlogContentProps {
     posts: BlogPost[];
@@ -31,10 +32,12 @@ export default function BlogContent({ posts }: BlogContentProps) {
     const [showResults, setShowResults] = useState(false)
     const [searchResults, setSearchResults] = useState<SearchResult[]>([])
     const searchRef = useRef<HTMLDivElement>(null)
+    const [isLoading, setIsLoading] = useState(true)
 
     // Mount effect
     useEffect(() => {
         setMounted(true)
+        setIsLoading(false)
     }, [])
 
     // Click outside handler effect
@@ -123,8 +126,8 @@ export default function BlogContent({ posts }: BlogContentProps) {
         });
     };
 
-    if (!mounted) {
-        return null
+    if (!mounted || isLoading) {
+        return <BlogGridSkeleton />
     }
 
     const BlogCardSkeleton = () => (

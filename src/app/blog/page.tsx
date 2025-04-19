@@ -5,6 +5,8 @@ import { getBlogPosts } from "@/lib/blog-utils"
 import { generatePageMetadata } from "@/lib/metadata"
 import ApiService from "@/services/api.services"
 import { Metadata } from "next"
+import { BlogGridSkeleton } from "@/components/blog/blog-grid-skeleton"
+import { Suspense } from "react"
 
 export async function generateMetadata(): Promise<Metadata> {
     try {
@@ -48,7 +50,9 @@ export default async function BlogPage() {
             </div>
 
             <div className="md:hidden bg-white px-4 pb-4"></div>
-            <BlogContent posts={posts} />
+            <Suspense fallback={<BlogGridSkeleton />}>
+                <BlogContent posts={posts} />
+            </Suspense>
         </div>
     )
 }

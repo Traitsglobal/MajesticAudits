@@ -1,22 +1,24 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu, X, ChevronDown } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { usePathname } from "next/navigation"
-
-// Import the services data
+import Image from "next/image"
+import { getStrapiMedia } from "@/lib/utils"
+import { useHomepageData } from "@/hooks/useHomepageData"
+import type { Image as StrapiImage } from "@/types/block"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function MobileHeader() {
     const [mounted, setMounted] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const [isServicesOpen, setIsServicesOpen] = useState(false)
     const pathname = usePathname()
+    const { getHeaderLogo } = useHomepageData()
+    const logo = getHeaderLogo() as StrapiImage | null
 
-    useEffect(() => {
-        setMounted(true)
-    }, [])
+    useEffect(() => { setMounted(true) }, [])
 
     if (!mounted) {
         return null
@@ -29,11 +31,30 @@ export default function MobileHeader() {
         return pathname.startsWith(path)
     }
 
+    const logoUrl = logo?.url ? getStrapiMedia(logo.url) || '/images/placeholder.jpg' : '/images/placeholder.jpg'
+
     return (
         <div className="md:hidden">
             {/* Header with menu button */}
-            <header className="fixed top-0 left-0 right-0 bg-[#003366] text-white py-4 px-4 z-40 flex justify-between items-center">
-                {/* Left: Hamburger Menu */}
+            <header className="fixed top-0 left-0 right-0 bg-[#003366] text-white py-2 px-4 z-40 flex justify-between items-center">
+                {/* Left: Logo */}
+                <Link href="/" className="flex items-center">
+                    {!mounted ? (
+                        <Skeleton className="h-10 w-[60px] rounded-sm bg-gray-200/20" />
+                    ) : (
+                        <Image
+                            src={logoUrl}
+                            alt={"Majestic Audits logo"}
+                            width={60}
+                            height={40}
+                            className="rounded-sm object-contain object-center"
+                            quality={100}
+                            priority
+                        />
+                    )}
+                </Link>
+
+                {/* Right: Hamburger Menu */}
                 <button
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     className="focus:outline-none"
@@ -41,12 +62,6 @@ export default function MobileHeader() {
                 >
                     <Menu size={24} className="text-white" />
                 </button>
-
-                {/* Center: Empty space for alignment */}
-                <div></div>
-
-                {/* Right: Empty space for alignment */}
-                <div></div>
             </header>
 
             {/* Overlay */}
@@ -75,11 +90,20 @@ export default function MobileHeader() {
                     >
                         <div className="flex justify-between items-center p-4 border-b border-blue-800">
                             <Link href="/" className="flex items-center" onClick={() => setIsSidebarOpen(false)}>
-                                <div className="text-3xl font-bold">
-                                    <span className="text-white">M</span>
-                                </div>
+                                {!mounted ? (
+                                    <Skeleton className="h-10 w-[60px] rounded-sm bg-gray-200/20" />
+                                ) : (
+                                    <Image
+                                        src={logoUrl}
+                                        alt={"Majestic Financial Audits"}
+                                        width={60}
+                                        height={40}
+                                        className="rounded-sm object-contain object-center"
+                                        quality={100}
+                                        priority
+                                    />
+                                )}
                             </Link>
-
                             <motion.button
                                 onClick={() => setIsSidebarOpen(false)}
                                 className="focus:outline-none p-2 rounded-full hover:bg-[#002147]"
@@ -122,42 +146,7 @@ export default function MobileHeader() {
                                     >
                                         SERVICES
                                     </Link>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            setIsServicesOpen(!isServicesOpen)
-                                        }}
-                                        className="focus:outline-none"
-                                    >
-                                        <ChevronDown
-                                            size={16}
-                                            className={`transition-transform duration-300 ${isServicesOpen ? "rotate-180" : ""}`}
-                                        />
-                                    </button>
                                 </div>
-
-                                {/* <AnimatePresence>
-                                    {isServicesOpen && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: "auto" }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="ml-4 border-l-2 border-blue-400"
-                                        >
-                                            {services.map((service) => (
-                                                <Link
-                                                    key={service.id}
-                                                    href={`/services/${service.id}`}
-                                                    className={`block py-3 pl-4 pr-2 hover:bg-[#002147] rounded-md ${isActive(`/services/${service.id}`) ? "bg-[#002147]" : ""}`}
-                                                    onClick={() => setIsSidebarOpen(false)}
-                                                >
-                                                    {service.title}
-                                                </Link>
-                                            ))}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence> */}
                             </div>
 
                             <Link
@@ -177,7 +166,7 @@ export default function MobileHeader() {
                         </nav>
 
                         <div className="p-4 border-t border-blue-800 text-sm text-center text-blue-300">
-                            © 2025 Majestic CFO Services
+                            © 2025 Majestic Financial Audits
                         </div>
                     </motion.div>
                 )}

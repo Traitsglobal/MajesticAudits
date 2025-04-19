@@ -8,7 +8,7 @@ export default function Footer() {
             <div className="container mx-auto px-4 max-w-6xl">
                 <div className="py-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-start text-sm">
                     {/* Left Section: Copyright and Links */}
-                    <div className="flex flex-col space-y-3 text-blue-200">
+                    <div className="md:flex flex-col space-y-3 text-blue-200 hidden">
                         <div className="whitespace-nowrap">
                             © {new Date().getFullYear()} Majestic.
                         </div>

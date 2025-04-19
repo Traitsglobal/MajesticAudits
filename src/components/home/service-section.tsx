@@ -89,38 +89,43 @@ export default function ServicesSection() {
                     {services.map((service, index) => (
                         <motion.div
                             key={service.id}
-                            className="flex flex-col h-full"
+                            className="flex flex-col h-full touch-none"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
                             <motion.div
-                                className="flex flex-col bg-white text-black p-3 md:p-6 rounded-xl h-full transition-all duration-300 ease-in-out border border-gray-200 overflow-hidden relative"
+                                className="flex flex-col bg-white text-black p-3 md:p-6 rounded-xl h-full border border-gray-200 overflow-hidden relative cursor-pointer active:bg-[#003366] active:text-white active:scale-105"
                                 whileHover={{
                                     backgroundColor: "#003366",
                                     color: "#ffffff",
                                     scale: 1.05,
-                                    transition: {
-                                        duration: 0.3,
-                                        ease: "easeOut",
-                                    },
+                                }}
+                                whileTap={{
+                                    backgroundColor: "#003366",
+                                    color: "#ffffff",
+                                    scale: 1.05,
+                                }}
+                                transition={{
+                                    type: "tween",
+                                    duration: 0.2,
                                 }}
                             >
                                 {/* Icon container */}
                                 <div className="mb-3 md:mb-4 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#FF6B35] flex items-center justify-center">
-                                    <div className="scale-75 md:scale-100">
+                                    <div className="scale-75 md:scale-100 text-white">
                                         {serviceIcons[service.slug] || <Briefcase size={32} />}
                                     </div>
                                 </div>
 
                                 {/* Content container */}
                                 <div className="flex flex-col flex-grow">
-                                    <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">
+                                    <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 transition-colors duration-200">
                                         {service.title}
                                     </h3>
 
-                                    <p className="text-sm md:text-base mb-3 md:mb-4 flex-grow line-clamp-3">
+                                    <p className="text-sm md:text-base mb-3 md:mb-4 flex-grow line-clamp-3 transition-colors duration-200">
                                         {service.content[0]?.children[0]?.text}
                                     </p>
                                 </div>
@@ -129,7 +134,7 @@ export default function ServicesSection() {
                                 <div className="mt-auto">
                                     <Link 
                                         href={`/services/${service.slug}`} 
-                                        className="text-xs md:text-sm font-medium hover:underline inline-block"
+                                        className="text-xs md:text-sm font-medium hover:underline inline-block transition-colors duration-200"
                                     >
                                         Read more about {service.title.toLowerCase()}
                                     </Link>

@@ -202,7 +202,7 @@ export default function BlogSection() {
                                         {formatDate(post.date)} |{" "}
                                         <Link
                                             href={`/blog?category=${encodeURIComponent(post.categories)}`}
-                                            className="text-[#003366] font-medium px-2 py-0.5 rounded-sm"
+                                            className="text-[#003366] font-medium px-2 py-0.5"
                                             prefetch={false}
                                             aria-label={`View all posts in category: ${post.categories}`}
                                         >
@@ -268,12 +268,48 @@ export default function BlogSection() {
 
                 {/* Mobile View */}
                 <div className="relative mt-8 md:hidden">
-                    <div className="overflow-hidden">
+                    <div 
+                        className="overflow-hidden touch-pan-y"
+                        onTouchStart={(e) => {
+                            const touch = e.touches[0];
+                            const startX = touch.clientX;
+                            const target = e.currentTarget;
+
+                            function handleTouchMove(e: TouchEvent) {
+                                const touch = e.touches[0];
+                                const diff = startX - touch.clientX;
+                                
+                                // Prevent default to stop page scrolling while sliding
+                                if (Math.abs(diff) > 5) {
+                                    e.preventDefault();
+                                }
+                            }
+
+                            function handleTouchEnd(e: TouchEvent) {
+                                const touch = e.changedTouches[0];
+                                const diff = startX - touch.clientX;
+                                
+                                // Threshold for slide (50px)
+                                if (Math.abs(diff) > 50) {
+                                    if (diff > 0) {
+                                        nextSlide();
+                                    } else {
+                                        prevSlide();
+                                    }
+                                }
+
+                                target.removeEventListener('touchmove', handleTouchMove);
+                                target.removeEventListener('touchend', handleTouchEnd);
+                            }
+
+                            target.addEventListener('touchmove', handleTouchMove, { passive: false });
+                            target.addEventListener('touchend', handleTouchEnd);
+                        }}
+                    >
                         <div
-                            className="flex flex-nowrap"
+                            className="flex flex-nowrap transition-transform duration-300 ease-out"
                             style={{
                                 transform: `translateX(-${currentIndex * 100}%)`,
-                                transition: 'transform 0.3s ease-out'
                             }}
                         >
                             {posts.map((post) => (
@@ -292,7 +328,7 @@ export default function BlogSection() {
                                                 {formatDate(post.date)} |{" "}
                                                 <Link
                                                     href={`/blog?category=${encodeURIComponent(post.categories)}`}
-                                                    className="text-[#003366] font-medium border-b border-[#003366] px-2 py-0.5 rounded-sm"
+                                                    className="text-[#003366] font-medium"
                                                     prefetch={false}
                                                     aria-label={`View all posts in category: ${post.categories}`}
                                                 >
@@ -330,8 +366,7 @@ export default function BlogSection() {
                             <button
                                 key={index}
                                 onClick={() => setCurrentIndex(index)}
-                                className={`w-2 h-2 mx-1 rounded-full transition-all ${currentIndex === index ? "bg-[#003366] w-6" : "bg-gray-300"
-                                    }`}
+                                className={`w-2 h-2 mx-1 rounded-full transition-all ${currentIndex === index ? "bg-[#003366] w-6" : "bg-gray-300"}`}
                                 aria-label={`Go to slide ${index + 1}`}
                             />
                         ))}

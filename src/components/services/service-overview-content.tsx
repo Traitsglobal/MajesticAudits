@@ -3,16 +3,26 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { useServices } from "@/hooks/useServices"
-import { Loader2 } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ServicesOverviewContent() {
     const { services, isLoading, error } = useServices();
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center min-h-[400px]">
-                <Loader2 className="h-8 w-8 animate-spin text-[#003366]" />
-            </div>
+            <section className="py-16 bg-white">
+                <div className="container mx-auto px-4 max-w-6xl">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[...Array(6)].map((_, index) => (
+                            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+                                <Skeleton className="h-7 w-3/4 mb-3" />
+                                <Skeleton className="h-4 w-full mb-2" />
+                                <Skeleton className="h-4 w-5/6" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
         )
     }
 
@@ -27,12 +37,6 @@ export default function ServicesOverviewContent() {
     return (
         <section className="py-16 bg-white">
             <div className="container mx-auto px-4 max-w-6xl">
-                {/* <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold text-[#003366] mb-4">Our Services</h1>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        Comprehensive financial solutions tailored to your business needs
-                    </p>
-                </div> */}
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {services.map((service, index) => (
