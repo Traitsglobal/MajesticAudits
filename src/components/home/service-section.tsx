@@ -89,14 +89,14 @@ export default function ServicesSection() {
                     {services.map((service, index) => (
                         <motion.div
                             key={service.id}
-                            className="flex flex-col h-full touch-none"
+                            className="flex flex-col h-full"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
                             <motion.div
-                                className="flex flex-col bg-white text-black p-3 md:p-6 rounded-xl h-full border border-gray-200 overflow-hidden relative cursor-pointer active:bg-[#003366] active:text-white active:scale-105"
+                                className="flex flex-col bg-white text-black p-3 md:p-6 rounded-xl h-full border border-gray-200 overflow-hidden relative cursor-pointer active:bg-[#003366] active:text-white active:scale-105 touch-manipulation"
                                 whileHover={{
                                     backgroundColor: "#003366",
                                     color: "#ffffff",
