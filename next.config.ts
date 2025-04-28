@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: ' ',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'majesticaudits.com',
+        pathname: '/uploads/**'
+      },
       // {
       //   protocol: 'http',
       //   hostname: 'majestic.hopto.org',
