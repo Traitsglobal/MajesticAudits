@@ -42,10 +42,14 @@ export default function BlogSidebar({
         return acc
     }, {} as Record<string, number>)
 
+    console.log('tags', tags)
+
     // Get latest posts
     const latestPosts = [...posts]
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, 2)
+
+    console.log('latestPosts', latestPosts)
 
     // Add this helper function at the top of your component
     const formatDate = (dateString: string) => {

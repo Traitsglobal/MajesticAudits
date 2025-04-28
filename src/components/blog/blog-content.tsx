@@ -158,7 +158,7 @@ export default function BlogContent({ posts }: BlogContentProps) {
             <div className="container mx-auto px-4 max-w-6xl">
                 {filteredPosts.length === 0 && !isSearching ? (
                     <div className="bg-white rounded-lg p-8 text-center shadow-md">
-                        <h2 className="text-2xl font-bold mb-4 text-[#003366]">No posts found</h2>
+                        <h2 className="text-2xl font-bold mb-4 text-[#003366]">No post found</h2>
                         <p className="text-gray-700 mb-4">
                             {selectedCategory && selectedTag
                                 ? `There are currently no blog posts in the ${selectedCategory} category with the ${selectedTag} tag.`
