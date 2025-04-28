@@ -10,8 +10,6 @@ export function getStrapiURL(): string {
 }
 
 export function getStrapiMedia(url: string | null) {
-  console.log('url', url);
-  console.log('getStrapiURL()', getStrapiURL());
   if (url == null) return null;
   if (url.startsWith("data:")) return url;
   if (url.startsWith("http") || url.startsWith("//")) return url;

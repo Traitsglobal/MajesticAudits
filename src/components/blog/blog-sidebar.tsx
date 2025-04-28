@@ -30,6 +30,8 @@ export default function BlogSidebar({
         return acc
     }, {} as Record<string, number>)
 
+    console.log('categories', categories)
+
     // Get unique tags and their counts
     const tags = posts.reduce((acc, post) => {
         post.tags.split(',').forEach(tag => {
