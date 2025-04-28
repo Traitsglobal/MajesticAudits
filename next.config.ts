@@ -25,11 +25,11 @@ const nextConfig: NextConfig = {
       //   hostname: 'majestic.hopto.org',
       //   pathname: '/uploads/**',
       // },
-      {
-        protocol: 'http',
-        hostname: 'ec2-34-224-212-73.compute-1.amazonaws.com',
-        pathname: '/uploads/**',
-      },
+      // {
+      //   protocol: 'http',
+      //   hostname: 'ec2-34-224-212-73.compute-1.amazonaws.com',
+      //   pathname: '/uploads/**',
+      // },
       // Add your production domain when deploying
       // {
       //   protocol: 'https',
