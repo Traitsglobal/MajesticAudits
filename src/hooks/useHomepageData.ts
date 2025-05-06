@@ -18,6 +18,8 @@ interface HomepageData {
     error: Error | null;
 }
 
+const LOGO_STORAGE_KEY = 'header_logo';
+
 export const useHomepageData = () => {
     const [data, setData] = useState<HomepageData>({
         blocks: [],
@@ -35,7 +37,7 @@ export const useHomepageData = () => {
         const fetchData = async () => {
             try {
                 const response = await ApiService.fetchHomepageData();
-                setData({
+                const newData = {
                     blocks: response.data.blocks || [],
                     metadata: response.data.metadata || {
                         metaTitle: '',
@@ -45,7 +47,9 @@ export const useHomepageData = () => {
                     },
                     isLoading: false,
                     error: null,
-                });
+                };
+
+                setData(newData);
             } catch (error) {
                 setData(prev => ({
                     ...prev,
@@ -59,14 +63,22 @@ export const useHomepageData = () => {
     }, []);
 
     const getHeaderLogo = () => {
-        const headerBlock = data.blocks.find(
-            (block: Blocks) => block.__component === 'layout.header'
-        );
-        return headerBlock?.logo || null;
+        if (typeof window !== 'undefined') {
+            const storedLogo = sessionStorage.getItem(LOGO_STORAGE_KEY);
+            if (storedLogo) {
+                return JSON.parse(storedLogo);
+            }
+        }
+
+        const headerBlock = data.blocks.find((block: Blocks) => block.__component === 'layout.header');
+        const logo = headerBlock?.logo || null;
+
+        if (logo && typeof window !== 'undefined') {
+            sessionStorage.setItem(LOGO_STORAGE_KEY, JSON.stringify(logo));
+        }
+
+        return logo;
     };
 
-    return {
-        ...data,
-        getHeaderLogo,
-    };
+    return { ...data, getHeaderLogo };
 }; 
